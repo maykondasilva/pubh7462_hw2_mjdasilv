@@ -2,7 +2,7 @@
 title: "pubh7462_hw2_mjdasilv"
 author: "Maykon da Silva"
 date: "2/7/2022"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include = FALSE}
@@ -10,6 +10,8 @@ output: html_document
 library(tidyverse)
 library(forcats)
 library(gt)
+library(DataExplorer)
+library(janitor)
 
 #Working directory for .RMD
 knitr::opts_knit$set(echo = TRUE,
@@ -27,12 +29,184 @@ knitr::opts_chunk$set(
   echo  = TRUE
 )
 
-#Set Theme for ggplot2 - centers title and legend at bottom by default
-theme_set(theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom"))
+#Set Theme for ggplot2 - centers title and legend at right side by default
+theme_set(theme(plot.title = element_text(hjust = 0.5), legend.position = "right"))
 
 #Set Scientific notation output and decimal places for knitr
 options(scipen = 999)
 options(digits = 4)
 ```
 
+```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE}
+# Reading in the dataset with relative path
+brfss.df <- read_csv("./data/brfss_smart_2010.csv")
+```
 
+# Problem 3. BRFSS SMART 2002-2010
+
+## 3.1 Data Exploration and Cleaning
+
+```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE, include = FALSE}
+
+# Getting to know the data
+introduce(brfss.df)
+plot_intro(brfss.df)
+plot_str(brfss.df)
+plot_histogram(brfss.df)
+```
+
+```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE, results = TRUE}
+
+# Tidying up the data (Cleaning)
+brfss.tidy <- brfss.df %>%
+  clean_names() %>%
+  filter(topic %in% "Overall Health") %>%
+  rename(state = locationabbr, locations = locationdesc, prop_responses = data_value) %>%
+  separate(locations, c("state_abb", "county"), sep = " - ") %>%
+  select(year, state, county, response, sample_size, prop_responses) %>%
+  mutate(year = as.factor(year))
+```
+
+## 3.2 Data Description
+
+The BRFSS SMART 2002-2010 is a County Prevalence lad line only data set, which can be used to identify emerging health problems, establish and track health objectives, and develop and evaluate public health policies and programs. The original data set contains 23 variables but for this assignment only Year, State, County, Response, Sample Size and Proportion of Responses will be utilized to assess the "Overall Health" topic. The Overall Health topic contains five options of responses: Excellent, Very Good, Good, Fair, and Poor and will be described as "response" in the following paragraphs.  
+
+```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE, results = TRUE}
+
+# Determining the number of rows and columns from the penguins data set
+brfss.tidy_rows <- nrow(brfss.tidy)
+brfss.tidy_columns <- ncol(brfss.tidy)
+```
+
+Therefore, the data set contains:
+
+- `r brfss.tidy_columns` variables: year (from 2002 to 2010), state (all 50 US states), county (counties with 500 or more respondents), response (5 options: Excellent, Very Good, Good, Fair and Poor), sample size (representing the number of respondents/observations), and proportion of responses (which represents the relationship between number of observations for each possible response and the total number of observations for a specific county in percentage). 
+
+- `r brfss.tidy_rows` observations/rows: each observation is a combination of all 6 variables and their levels (as described above). As an example, row 1 describes the the sample size and proportion of responses for Jefferson County in Alabama (AL) in 2010 for the Excellent response. In this case, 94 observations were accounted as Excellent response, which represents 18.9% of all observations for Jefferson County. 
+
+## 3.3 Do Data Science
+
+### 3.3.1 In the year 2004, which states were observed at 6 locations?
+
+```{r, echo = TRUE, warning = FALSE, error = FALSE, results = TRUE, message = FALSE}
+
+# Determining the number of states observed at 6 locations in 2004 using distinct()
+brfss.tidy %>%
+  filter(year %in% 2004) %>%
+  distinct(state, county) %>%
+  group_by(state) %>%
+  rename(State = state) %>%
+  summarise(Observations = n()) %>%
+  filter(Observations %in% 6) %>%
+  gt() %>%
+  cols_align(align = "center") %>%
+  tab_header("States observed at 6 locations in 2004")
+```
+
+
+As shown by the table above, eight states were observed at six locations in 2004: Colorado (CO), Connecticut (CT), Maryland (MD), New Mexico (NM), South Carolina (SC), Texas (TX), Utah (UT), and Vermont (VT). 
+
+
+### 3.3.2 Make a "spaghetti plot" that shows the number of observed locations in each state from 2002 to 2010. Which state has the highest mean number of locations over this period? 
+
+```{r, echo = TRUE, warning = FALSE, error = FALSE, results = TRUE, message = FALSE}
+brfss.tidy %>%
+  select(year, state, county) %>%
+  distinct(year, state, county) %>%
+  group_by(year, state) %>%
+  summarise(n = n()) %>%
+  mutate(state = fct_reorder(.f = state, .x = n, .fun = "mean", .desc = TRUE),
+         year = year %>%
+           as.character() %>%
+           as.numeric()
+  ) %>%
+  ggplot(aes(x = year, y = n, colour = state)) +
+  geom_line() +
+  labs(
+    x     = "Year",
+    y     = "Number of Locations Observed",
+    title = "Observed Locations (Counties) per State from 2002 - 2010"
+  ) +
+  scale_x_continuous(breaks = 2002:2010) +
+  scale_colour_viridis_d("State (Desc. Average Observations)", option = "turbo") +
+  theme(
+    legend.text  = element_text(size = 6),
+    legend.title = element_text(size = 8))
+```
+
+
+As shown by the "spaghetti plot" above, Pennsylvania is the state with the highest number of locations observed from 2002 to 2010. In addition, most of the states with the highest average of locations observed in this period are located in the US East Cost. Furthermore, the majority of the states with the lowest average of locations observed in this period are among the less populated states in the US. This is probably correlated to the size of the counties that make up each state. Since only counties with at least 500 or more respondents were selected to represent this data set, less populated states might have smaller (less populated) counties, which reduces the amount of locations being surveyed. 
+
+
+### 3.3.3 Make a table showing, for the years 2002, 2006, and 2010, the mean and standard deviation of sample size and proportion of Excellent, Good, and Poor responses across locations in MN.
+
+
+```{r, echo = TRUE, warning = FALSE, error = FALSE, results = TRUE, message = FALSE}
+brfss.tidy %>%
+  filter(year     %in% c("2002", "2006", "2010"),
+         state    %in% "MN",
+         response %in% c("Excellent", "Good", "Poor")) %>%
+  group_by(year, response) %>%
+  summarise(
+    across(
+      contains(c("sample", "prop")),
+        list(mean = mean, sd = sd), na.rm = TRUE,
+        .names = "{.col}_{.fn}"
+  )
+) %>%
+  mutate(across(where(is.numeric), round, 2)) %>%
+  gt() %>%
+  cols_align(align = "center") %>%
+  tab_header("Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and 2010")
+```
+
+As shown by the table above, "in 2002, 2006, and 2010, "Good" was the response of Overall Health with the highest average sample size, followed by "Excellent" and "Poor", respectively. This raises two main questions to me:
+
+- 1) Was a lower sample size mean verified for Poor Overall Health because people with poor overall health were not willing to be surveyed or because they could not do it?
+
+- 2) Maybe it is the opposite. Maybe most people in MN are healthier and that is why the sample size mean for poor overall health was so low in the state. 
+
+In addition, a similar trend was verified for the average proportion of responses. However, it is important to point out that the Standard Deviation for Excellent and Good are substantially higher than the Standard Deviation of Poor for the sample size mean, which means that the data for excellent and good are more dispersed (or there is more variation) in relation to the mean than for poor. 
+
+### 3.3.4 Create a ggplot that communicates the results/trends from the table above and stands on its own
+
+```{r, echo = TRUE, warning = FALSE, error = FALSE, results = TRUE, message = FALSE}
+brfss.tidy %>%
+  filter(year     %in% c("2002", "2006", "2010"),
+         state    %in% "MN",
+         response %in% c("Excellent", "Good", "Poor")) %>%
+  group_by(year, response) %>%
+  summarise(
+    across(
+      contains(c("sample", "prop")),
+        list(mean = mean, sd = sd), na.rm = TRUE,
+        .names = "{.col}_{.fn}"
+  )
+) %>%
+  pivot_longer(cols      = 3:6, 
+               names_to  = "variable_mean.sd", 
+               values_to = "value") %>%
+  mutate(fct_relevel(response, c("Excellent", "Good", "Poor")),
+         year = year %>%
+           as.character() %>%
+           as.numeric()) %>%
+  mutate(variable_mean.sd = recode(variable_mean.sd, 
+                                   sample_size_mean    = "Sample Size Mean", 
+                                   sample_size_sd      = "Sample Size S.D.",
+                                   prop_responses_mean = "Prop. Responses Mean",
+                                   prop_responses_sd   = "Prop. Responses S.D.")) %>%
+  ggplot(aes(x = year, y = value, colour = response)) +
+  geom_line() +
+  labs(x        = "Year", 
+       y        = "Values of Summary Statistics (Mean and Standard Deviation)", 
+       title    = "Mean and Standard Deviation of Sample Size and Proportion of Response",
+       subtitle = "Data from MN in 2002, 2006 and 2010") +
+  facet_wrap(~variable_mean.sd, scales = "free", ncol = 2, labeller = ) +
+  scale_colour_viridis_d("Overall Health Response", option = "turbo") +
+  scale_x_continuous(breaks = seq(from = 2002, to = 2010, by = 4)) +
+  theme(
+    legend.text   = element_text(size = 10),
+    legend.title  = element_text(size = 10),
+    plot.title    = element_text(hjust = 0.5, size = 10),
+    plot.subtitle = element_text(hjust = 0.5, size = 10))
+```
