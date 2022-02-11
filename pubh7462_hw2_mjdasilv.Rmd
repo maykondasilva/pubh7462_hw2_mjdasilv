@@ -90,7 +90,7 @@ Therefore, the data set contains:
 
 ### 3.3.1 In the year 2004, which states were observed at 6 locations?
 
-```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE}
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
 
 # Determining the number of states observed at 6 locations in 2004 using distinct()
 brfss.tidy %>%
@@ -102,8 +102,8 @@ brfss.tidy %>%
   filter(Observations %in% 6) %>%
   gt() %>%
   tab_header("States observed at 6 locations in 2004")
-```
 
+```
 
 As shown by the table above, eight states were observed at six locations in 2004: Colorado (CO), Connecticut (CT), Maryland (MD), New Mexico (NM), South Carolina (SC), Texas (TX), Utah (UT), and Vermont (VT). 
 
@@ -111,6 +111,8 @@ As shown by the table above, eight states were observed at six locations in 2004
 ### 3.3.2 Make a "spaghetti plot" that shows the number of observed locations in each state from 2002 to 2010. Which state has the highest mean number of locations over this period? 
 
 ```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE}
+
+# Making a spaghetti plot
 brfss.tidy %>%
   select(year, state, county) %>%
   distinct(year, state, county) %>%
@@ -135,14 +137,13 @@ brfss.tidy %>%
     legend.title = element_text(size = 8))
 ```
 
-
 As shown by the "spaghetti plot" above, Pennsylvania is the state with the highest number of locations observed from 2002 to 2010. In addition, most of the states with the highest average of locations observed in this period are located in the US East Cost. Furthermore, the majority of the states with the lowest average of locations observed in this period are among the less populated states in the US. This is probably correlated to the size of the counties that make up each state. Since only counties with at least 500 or more respondents were selected to represent this data set, less populated states might have smaller (less populated) counties, which reduces the amount of locations being surveyed. 
-
 
 ### 3.3.3 Make a table showing, for the years 2002, 2006, and 2010, the mean and standard deviation of sample size and proportion of Excellent, Good, and Poor responses across locations in MN.
 
-
 ```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE}
+
+# Making a table for MN in 2002, 2006 and 2010 with the required measurements
 brfss.tidy %>%
   filter(year     %in% c("2002", "2006", "2010"),
          state    %in% "MN",
@@ -158,6 +159,7 @@ brfss.tidy %>%
   mutate(across(where(is.numeric), round, 2)) %>%
   gt() %>%
   tab_header("Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and 2010")
+
 ```
 
 As shown by the table above, "in 2002, 2006, and 2010, "Good" was the response of Overall Health with the highest average sample size, followed by "Excellent" and "Poor", respectively. This raises two main questions to me:
