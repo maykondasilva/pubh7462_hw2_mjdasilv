@@ -71,7 +71,8 @@ brfss.tidy %>%
   rename(State = state) %>%
   summarise(Observations = n()) %>%
   filter(Observations %in% 6) %>%
-  knitr::kable(caption = "States observed at 6 locations in 2004", format = "html")
+  knitr::kable(caption = "States observed at 6 locations in 2004", 
+               format  = "html")
 ```
 
 <table>
@@ -299,7 +300,8 @@ brfss.tidy %>%
   )
 ) %>%
   mutate(across(where(is.numeric), round, 2)) %>%
-  knitr::kable(caption = "Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and 2010", format = "html")
+  knitr::kable(caption = "Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and 2010", 
+               format  = "html")
 ```
 
 <table>
