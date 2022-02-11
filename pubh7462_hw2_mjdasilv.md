@@ -71,21 +71,170 @@ brfss.tidy %>%
   rename(State = state) %>%
   summarise(Observations = n()) %>%
   filter(Observations %in% 6) %>%
-  knitr::kable(caption = "States observed at 6 locations in 2004")
+  knitr::kable(caption = "States observed at 6 locations in 2004", format = "html")
 ```
 
-| State | Observations |
-| :---- | -----------: |
-| CO    |            6 |
-| CT    |            6 |
-| MD    |            6 |
-| NM    |            6 |
-| SC    |            6 |
-| TX    |            6 |
-| UT    |            6 |
-| VT    |            6 |
+<table>
+
+<caption>
 
 States observed at 6 locations in 2004
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+State
+
+</th>
+
+<th style="text-align:right;">
+
+Observations
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+CO
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+CT
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+MD
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+NM
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+SC
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+TX
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+UT
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+VT
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 As shown by the table above, eight states were observed at six locations
 in 2004: Colorado (CO), Connecticut (CT), Maryland (MD), New Mexico
@@ -150,23 +299,427 @@ brfss.tidy %>%
   )
 ) %>%
   mutate(across(where(is.numeric), round, 2)) %>%
-  knitr::kable(caption = "Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and 2010")
+  knitr::kable(caption = "Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and 2010", format = "html")
 ```
 
-| year | response  | sample\_size\_mean | sample\_size\_sd | prop\_responses\_mean | prop\_responses\_sd |
-| :--- | :-------- | -----------------: | ---------------: | --------------------: | ------------------: |
-| 2002 | Excellent |             116.00 |            83.27 |                 24.15 |                3.54 |
-| 2002 | Good      |             123.75 |            84.26 |                 23.95 |                1.05 |
-| 2002 | Poor      |              13.75 |             9.57 |                  2.40 |                1.17 |
-| 2006 | Excellent |             122.33 |            72.62 |                 23.83 |                2.99 |
-| 2006 | Good      |             137.33 |            85.82 |                 26.37 |                0.45 |
-| 2006 | Poor      |              15.00 |             6.93 |                  2.30 |                0.95 |
-| 2010 | Excellent |             203.80 |           190.60 |                 25.44 |                5.28 |
-| 2010 | Good      |             220.00 |           196.10 |                 26.04 |                3.55 |
-| 2010 | Poor      |              27.40 |            27.32 |                  2.36 |                0.77 |
+<table>
+
+<caption>
 
 Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and
 2010
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+year
+
+</th>
+
+<th style="text-align:left;">
+
+response
+
+</th>
+
+<th style="text-align:right;">
+
+sample\_size\_mean
+
+</th>
+
+<th style="text-align:right;">
+
+sample\_size\_sd
+
+</th>
+
+<th style="text-align:right;">
+
+prop\_responses\_mean
+
+</th>
+
+<th style="text-align:right;">
+
+prop\_responses\_sd
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+2002
+
+</td>
+
+<td style="text-align:left;">
+
+Excellent
+
+</td>
+
+<td style="text-align:right;">
+
+116.00
+
+</td>
+
+<td style="text-align:right;">
+
+83.27
+
+</td>
+
+<td style="text-align:right;">
+
+24.15
+
+</td>
+
+<td style="text-align:right;">
+
+3.54
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2002
+
+</td>
+
+<td style="text-align:left;">
+
+Good
+
+</td>
+
+<td style="text-align:right;">
+
+123.75
+
+</td>
+
+<td style="text-align:right;">
+
+84.26
+
+</td>
+
+<td style="text-align:right;">
+
+23.95
+
+</td>
+
+<td style="text-align:right;">
+
+1.05
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2002
+
+</td>
+
+<td style="text-align:left;">
+
+Poor
+
+</td>
+
+<td style="text-align:right;">
+
+13.75
+
+</td>
+
+<td style="text-align:right;">
+
+9.57
+
+</td>
+
+<td style="text-align:right;">
+
+2.40
+
+</td>
+
+<td style="text-align:right;">
+
+1.17
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2006
+
+</td>
+
+<td style="text-align:left;">
+
+Excellent
+
+</td>
+
+<td style="text-align:right;">
+
+122.33
+
+</td>
+
+<td style="text-align:right;">
+
+72.62
+
+</td>
+
+<td style="text-align:right;">
+
+23.83
+
+</td>
+
+<td style="text-align:right;">
+
+2.99
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2006
+
+</td>
+
+<td style="text-align:left;">
+
+Good
+
+</td>
+
+<td style="text-align:right;">
+
+137.33
+
+</td>
+
+<td style="text-align:right;">
+
+85.82
+
+</td>
+
+<td style="text-align:right;">
+
+26.37
+
+</td>
+
+<td style="text-align:right;">
+
+0.45
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2006
+
+</td>
+
+<td style="text-align:left;">
+
+Poor
+
+</td>
+
+<td style="text-align:right;">
+
+15.00
+
+</td>
+
+<td style="text-align:right;">
+
+6.93
+
+</td>
+
+<td style="text-align:right;">
+
+2.30
+
+</td>
+
+<td style="text-align:right;">
+
+0.95
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2010
+
+</td>
+
+<td style="text-align:left;">
+
+Excellent
+
+</td>
+
+<td style="text-align:right;">
+
+203.80
+
+</td>
+
+<td style="text-align:right;">
+
+190.60
+
+</td>
+
+<td style="text-align:right;">
+
+25.44
+
+</td>
+
+<td style="text-align:right;">
+
+5.28
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2010
+
+</td>
+
+<td style="text-align:left;">
+
+Good
+
+</td>
+
+<td style="text-align:right;">
+
+220.00
+
+</td>
+
+<td style="text-align:right;">
+
+196.10
+
+</td>
+
+<td style="text-align:right;">
+
+26.04
+
+</td>
+
+<td style="text-align:right;">
+
+3.55
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2010
+
+</td>
+
+<td style="text-align:left;">
+
+Poor
+
+</td>
+
+<td style="text-align:right;">
+
+27.40
+
+</td>
+
+<td style="text-align:right;">
+
+27.32
+
+</td>
+
+<td style="text-align:right;">
+
+2.36
+
+</td>
+
+<td style="text-align:right;">
+
+0.77
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 As shown by the table above, “in 2002, 2006, and 2010,”Good" was the
 response of Overall Health with the highest average sample size,

@@ -100,8 +100,7 @@ brfss.tidy %>%
   rename(State = state) %>%
   summarise(Observations = n()) %>%
   filter(Observations %in% 6) %>%
-  knitr::kable(caption = "States observed at 6 locations in 2004")
-
+  knitr::kable(caption = "States observed at 6 locations in 2004", format = "html")
 ```
 
 As shown by the table above, eight states were observed at six locations in 2004: Colorado (CO), Connecticut (CT), Maryland (MD), New Mexico (NM), South Carolina (SC), Texas (TX), Utah (UT), and Vermont (VT). 
@@ -156,8 +155,7 @@ brfss.tidy %>%
   )
 ) %>%
   mutate(across(where(is.numeric), round, 2)) %>%
-  knitr::kable(caption = "Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and 2010")
-
+  knitr::kable(caption = "Summary of Sample Size and Prop. Responses for MN in 2002, 2006, and 2010", format = "html")
 ```
 
 As shown by the table above, "in 2002, 2006, and 2010, "Good" was the response of Overall Health with the highest average sample size, followed by "Excellent" and "Poor", respectively. This raises two main questions to me:
