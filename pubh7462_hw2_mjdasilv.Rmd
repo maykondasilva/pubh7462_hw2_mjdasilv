@@ -3,6 +3,8 @@ title: "pubh7462_hw2_mjdasilv"
 author: "Maykon da Silva"
 date: "2/7/2022"
 output: github_document
+html_document: default
+pdf_document: default
 ---
 
 ```{r setup, include = FALSE}
@@ -88,7 +90,7 @@ Therefore, the data set contains:
 
 ### 3.3.1 In the year 2004, which states were observed at 6 locations?
 
-```{r, echo = TRUE, warning = FALSE, error = FALSE, results = TRUE, message = FALSE}
+```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE}
 
 # Determining the number of states observed at 6 locations in 2004 using distinct()
 brfss.tidy %>%
@@ -108,7 +110,7 @@ As shown by the table above, eight states were observed at six locations in 2004
 
 ### 3.3.2 Make a "spaghetti plot" that shows the number of observed locations in each state from 2002 to 2010. Which state has the highest mean number of locations over this period? 
 
-```{r, echo = TRUE, warning = FALSE, error = FALSE, results = TRUE, message = FALSE}
+```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE}
 brfss.tidy %>%
   select(year, state, county) %>%
   distinct(year, state, county) %>%
@@ -140,7 +142,7 @@ As shown by the "spaghetti plot" above, Pennsylvania is the state with the highe
 ### 3.3.3 Make a table showing, for the years 2002, 2006, and 2010, the mean and standard deviation of sample size and proportion of Excellent, Good, and Poor responses across locations in MN.
 
 
-```{r, echo = TRUE, warning = FALSE, error = FALSE, results = TRUE, message = FALSE}
+```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE}
 brfss.tidy %>%
   filter(year     %in% c("2002", "2006", "2010"),
          state    %in% "MN",
@@ -168,7 +170,7 @@ In addition, a similar trend was verified for the average proportion of response
 
 ### 3.3.4 Create a ggplot that communicates the results/trends from the table above and stands on its own
 
-```{r, echo = TRUE, warning = FALSE, error = FALSE, results = TRUE, message = FALSE}
+```{r, echo = TRUE, warning = FALSE, error = FALSE, message = FALSE}
 brfss.tidy %>%
   filter(year     %in% c("2002", "2006", "2010"),
          state    %in% "MN",
